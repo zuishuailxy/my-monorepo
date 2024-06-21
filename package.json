@@ -1,0 +1,13 @@
+{
+  "name": "my-monorepo",
+  "private": "true",
+  "version": "0.1.0",
+  "description": "my test monorepo",
+  "author": "Leo",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}

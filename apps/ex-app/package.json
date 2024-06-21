@@ -1,0 +1,14 @@
+{
+  "name": "@my-monorepo/ex-app",
+  "private": "true",
+  "version": "0.1.0",
+  "description": "example app",
+  "author": "leo",
+  "license": "MIT",
+  "scripts": {
+    "debug": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "@my-monorepo/utils": "workspace:*"
+  }
+}
