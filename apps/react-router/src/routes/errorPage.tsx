@@ -8,7 +8,6 @@ const errorPage:React.FC = () => {
     const error = useRouteError() as ErrorType;
     console.error(error);
 
-
     return (
         <div id="error-page">
             <h1>Oops!</h1>
