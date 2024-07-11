@@ -1,0 +1,15 @@
+{
+  "name": "@my-monorepo/vitest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+    "imports": {
+        "#*": "./*"
+    },
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
