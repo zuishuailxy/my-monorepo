@@ -1,0 +1,28 @@
+{
+  "status": "200",
+  "msg": null,
+  "params": null,
+  "data": {
+    "id": 143,
+    "name": "ample1",
+    "type": 1,
+    "businessCode": "test0524",
+    "child": [
+      {
+        "id": 144,
+        "name": "NA",
+        "type": 2,
+        "businessCode": "test0524-1",
+        "child": [
+          {
+            "id": 659,
+            "name": "NA United States of America",
+            "type": 3,
+            "businessCode": "NA_United States of America",
+            "child": null
+          }
+        ]
+      }
+    ]
+  }
+}
