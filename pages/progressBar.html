@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Bar Example</title>
+    <style>
+        #progress-container {
+            width: 100%;
+            background-color: #f3f3f3;
+        }
+        #progress-bar {
+            width: 0;
+            height: 30px;
+            background-color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <script>
+        let totalResources = 0;
+        let loadedResources = 0;
+
+        const progressBar = document.getElementById('progress-bar');
+
+        function updateProgressBar() {
+            // Update the progress bar width based on loaded resources
+            const percentage = (loadedResources / totalResources) * 100;
+            progressBar.style.width = percentage + '%';
+
+            // Continue updating if not fully loaded
+            if (loadedResources < totalResources) {
+                requestAnimationFrame(updateProgressBar);
+            }
+        }
+
+        function simulateResourceLoading() {
+            // Simulating the loading of resources over time
+            setTimeout(() => {
+                loadedResources += 1;
+                if (loadedResources < totalResources) {
+                    simulateResourceLoading();
+                }
+            }, 500); // Simulate resource loading every 500ms
+        }
+
+        // Initializing the total resources and starting the process
+        window.onload = function () {
+            totalResources = 20; // Example: Assume there are 10 resources to load
+            simulateResourceLoading(); // Simulate resource loading
+            requestAnimationFrame(updateProgressBar); // Start progress bar update
+        };
+    </script>
+
+</body>
+</html>

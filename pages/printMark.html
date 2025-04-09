@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .watermark {
+                position: relative;
+                width: 100%;
+                height: 100vh; /* 页面高度 */
+            }
+
+            .watermark::before {
+                content: "版权所有";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                font-size: 3rem;
+                color: rgba(0, 0, 0, 0.1); /* 水印透明度 */
+                text-align: center;
+                transform: rotate(-45deg);
+                z-index: 9999; /* 保证水印显示在页面之上 */
+                pointer-events: none; /* 防止水印影响页面交互 */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="watermark">
+            <p>您的内容显示在这里</p>
+        </div>
+
+        <div class="content">
+            <p>这是带有 canvas 水印的内容。</p>
+        </div>
+
+        <div class="content1">
+            <p>这是带有动态生成水印的内容。</p>
+        </div>
+        <canvas
+            id="watermarkCanvas"
+            style="position: absolute; top: 0; left: 0; pointer-events: none"
+        ></canvas>
+        <script>
+            const canvas = document.getElementById("watermarkCanvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            ctx.font = "100px Arial";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+            // ctx.rotate(-Math.PI / 4); // 旋转水印
+            ctx.fillText("Watermark Text", 50, 100);
+
+            function addWatermark(text) {
+                const watermarkDiv = document.createElement("div");
+                watermarkDiv.style.position = "fixed";
+                watermarkDiv.style.top = "0";
+                watermarkDiv.style.left = "0";
+                watermarkDiv.style.width = "100vw";
+                watermarkDiv.style.height = "100vh";
+                watermarkDiv.style.pointerEvents = "none";
+                watermarkDiv.style.zIndex = "9999";
+                watermarkDiv.style.opacity = "0.2";
+                watermarkDiv.style.background = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><text x="50%" y="50%" fill="rgba(0,0,0,0.1)" font-size="50" transform="rotate(-45)">1231231</text></svg>')`;
+
+                document.body.appendChild(watermarkDiv);
+            }
+
+            addWatermark("Dynamic Watermark");
+        </script>
+    </body>
+</html>

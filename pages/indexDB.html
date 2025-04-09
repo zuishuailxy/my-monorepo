@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IndexedDB Example</title>
+</head>
+<body>
+<a href=""></a>
+<h2>IndexedDB Example</h2>
+<button onclick="addData()">Add Data</button>
+<button onclick="getData()">Get Data</button>
+<button onclick="updateData()">Update Data</button>
+<button onclick="deleteData()">Delete Data</button>
+
+<script>
+  let db;
+
+  // 打开数据库
+  const request = indexedDB.open('MyTestDB', 1);
+
+  request.onerror = function(event) {
+    console.log('Database failed to open', event);
+  };
+
+  request.onsuccess = function(event) {
+    console.log('Database opened successfully');
+    db = event.target.result;  // 获取数据库实例
+  };
+
+  request.onupgradeneeded = function(event) {
+    // 只在数据库版本号变更时触发
+    db = event.target.result;
+
+    // 创建一个名为 "people" 的对象存储（表），主键是 id
+    const objectStore = db.createObjectStore('people', { keyPath: 'id', autoIncrement: true });
+
+    // 定义表中的字段（可选）
+    objectStore.createIndex('name', 'name', { unique: false });
+    objectStore.createIndex('age', 'age', { unique: false });
+
+    console.log('Object store created successfully');
+  };
+
+  // 添加数据
+  function addData() {
+    const transaction = db.transaction(['people'], 'readwrite');
+    const store = transaction.objectStore('people');
+
+    const person = { name: 'John Doe', age: 30 };
+    const request = store.add(person);
+
+    request.onsuccess = function() {
+      console.log('Data added successfully');
+    };
+
+    request.onerror = function() {
+      console.log('Failed to add data');
+    };
+  }
+
+  // 读取数据
+  function getData() {
+    const transaction = db.transaction(['people'], 'readonly');
+    const store = transaction.objectStore('people');
+
+    const request = store.get(1);  // 获取主键为 1 的记录
+
+    request.onsuccess = function() {
+      console.log('Data retrieved:', request.result);
+    };
+
+    request.onerror = function() {
+      console.log('Failed to retrieve data');
+    };
+  }
+
+  // 更新数据
+  function updateData() {
+    const transaction = db.transaction(['people'], 'readwrite');
+    const store = transaction.objectStore('people');
+
+    const updatedPerson = { id: 1, name: 'John Smith', age: 31 };
+    const request = store.put(updatedPerson);  // 根据主键更新数据
+
+    request.onsuccess = function() {
+      console.log('Data updated successfully');
+    };
+
+    request.onerror = function() {
+      console.log('Failed to update data');
+    };
+  }
+
+  // 删除数据
+  function deleteData() {
+    const transaction = db.transaction(['people'], 'readwrite');
+    const store = transaction.objectStore('people');
+
+    const request = store.delete(1);  // 删除主键为 1 的记录
+
+    request.onsuccess = function() {
+      console.log('Data deleted successfully');
+    };
+
+    request.onerror = function() {
+      console.log('Failed to delete data');
+    };
+  }
+</script>
+
+</body>
+</html>
