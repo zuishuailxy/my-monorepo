@@ -1,0 +1,118 @@
+<div id="app"></div>
+<style>
+  .red {
+    color: red;
+  }
+  .green {
+    color: green;
+  }
+</style>
+
+<script>
+  function h(tag, props, children) {
+    return { tag, props, children };
+  }
+
+  function mount(vnode, container) {
+    // create element
+    const el = (vnode.el = document.createElement(vnode.tag));
+    // props
+    if (vnode.props) {
+      for (const key in vnode.props) {
+        // to sample, we only consider all to be attributes
+        el.setAttribute(key, vnode.props[key]);
+      }
+    }
+    // children
+    if (vnode.children) {
+      // children can be string or array
+      if (typeof vnode.children === "string") {
+        el.textContent = vnode.children;
+      } else {
+        vnode.children.forEach((child) => {
+          mount(child, el);
+        });
+      }
+    }
+    container.appendChild(el);
+  }
+
+  const vdom = h("div", { class: "red" }, [h("span", null, "hello world")]);
+
+  mount(vdom, document.querySelector("#app"));
+
+  // patch
+  function patch(n1, n2) {
+    // n1 old vnode
+    // n2 new vnode
+    const el = (n2.el = n1.el);
+    // check if the two nodes are the same type
+    if (n1.tag === n2.tag) {
+      // should diff
+      // props
+      const oldProps = n1.props || {};
+      const newProps = n2.props || {};
+      for (const key in newProps) {
+        const oldValue = oldProps[key];
+        const newValue = newProps[key];
+        if (oldValue !== newValue) {
+          el.setAttribute(key, newValue);
+        }
+      }
+
+      for (const key in oldProps) {
+        if (!newProps[key]) {
+          el.removeAttribute(key);
+        }
+      }
+
+      // children
+      const oldChildren = n1.children || [];
+      const newChildren = n2.children || [];
+      if (typeof newChildren === "string") {
+        if (typeof oldChildren === "string") {
+          if (newChildren !== oldChildren) {
+            el.textContent = newChildren;
+          }
+        } else {
+          // even if oldChildren is an array, we can still replace it with a string
+          el.textContent = newChildren;
+        }
+      } else {
+        // newChildren is an array
+        if (typeof oldChildren === "string") {
+          // 旧的节点是字符串，新的节点是数组
+          // 清空旧的节点，挂载新的节点
+          el.textContent = "";
+          newChildren.forEach((child) => {
+            mount(child, el);
+          });
+        } else {
+          // both are arrays
+          // 首先对比相同长度的节点
+          const commonLength = Math.min(oldChildren.length, newChildren.length);
+          for (let i = 0; i < commonLength; i++) {
+            patch(oldChildren[i], newChildren[i]);
+          }
+          // 对比完成后，如果新的节点长度大于旧的节点长度，挂载新的节点
+          if (newChildren.length > oldChildren.length) {
+            newChildren.slice(oldChildren.length).forEach((child) => {
+              mount(child, el);
+            });
+          } else if (newChildren.length < oldChildren.length) {
+            // 如果新的节点长度小于旧的节点长度，删除多余的节点
+            oldChildren.slice(newChildren.length).forEach((child) => {
+              el.removeChild(child.el);
+            });
+          }
+        }
+      }
+    } else {
+      // replace
+    }
+  }
+
+  const vdom2 = h("div", { class: "green" }, [h("span", null, "hello leo")]);
+
+  patch(vdom, vdom2);
+</script>
