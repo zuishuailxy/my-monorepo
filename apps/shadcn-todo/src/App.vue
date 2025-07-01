@@ -14,6 +14,9 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+
+      <p class="pt-2 text-sky-500">Test tailwind css</p>
+
     </div>
   </header>
 
